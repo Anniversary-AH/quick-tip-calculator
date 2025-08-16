@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Icons</title>
+</head>
+<body>
+    <h1>PWA Icon Generator</h1>
+    <p>Right-click each icon below and save it to the icons folder:</p>
+    
+    <div id="icons"></div>
+
+    <script>
+        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        const iconsContainer = document.getElementById('icons');
+
+        sizes.forEach(size => {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            // Background
+            ctx.fillStyle = '#3b82f6';
+            ctx.fillRect(0, 0, size, size);
+
+            // Calculator icon
+            ctx.fillStyle = 'white';
+            const padding = size * 0.2;
+            const calcWidth = size - (padding * 2);
+            const calcHeight = calcWidth * 0.8;
+            const calcX = padding;
+            const calcY = (size - calcHeight) / 2;
+
+            // Calculator body
+            ctx.fillRect(calcX, calcY, calcWidth, calcHeight);
+            ctx.strokeStyle = '#1e40af';
+            ctx.lineWidth = size * 0.02;
+            ctx.strokeRect(calcX, calcY, calcWidth, calcHeight);
+
+            // Screen
+            const screenHeight = calcHeight * 0.3;
+            const screenY = calcY + calcHeight * 0.1;
+            ctx.fillStyle = '#f3f4f6';
+            ctx.fillRect(calcX + calcWidth * 0.1, screenY, calcWidth * 0.8, screenHeight);
+
+            // Buttons
+            const buttonSize = calcWidth * 0.15;
+            const buttonSpacing = calcWidth * 0.05;
+            const buttonsStartY = screenY + screenHeight + calcHeight * 0.1;
+            const buttonsStartX = calcX + calcWidth * 0.1;
+
+            ctx.fillStyle = '#e5e7eb';
+            for (let row = 0; row < 3; row++) {
+                for (let col = 0; col < 3; col++) {
+                    const x = buttonsStartX + col * (buttonSize + buttonSpacing);
+                    const y = buttonsStartY + row * (buttonSize + buttonSpacing);
+                    ctx.fillRect(x, y, buttonSize, buttonSize);
+                }
+            }
+
+            // Plus sign
+            ctx.fillStyle = '#3b82f6';
+            const plusSize = size * 0.15;
+            const plusX = size * 0.7;
+            const plusY = size * 0.7;
+            ctx.fillRect(plusX - plusSize/2, plusY - plusSize/6, plusSize, plusSize/3);
+            ctx.fillRect(plusX - plusSize/6, plusY - plusSize/2, plusSize/3, plusSize);
+
+            // Text
+            ctx.fillStyle = '#1e40af';
+            ctx.font = `bold ${size * 0.08}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.fillText('TIP', size/2, size * 0.9);
+
+            // Create download link
+            const link = document.createElement('a');
+            link.download = `icon-${size}x${size}.png`;
+            link.href = canvas.toDataURL();
+            link.textContent = `Download ${size}x${size} icon`;
+            link.style.display = 'block';
+            link.style.margin = '10px 0';
+            link.style.padding = '10px';
+            link.style.backgroundColor = '#f3f4f6';
+            link.style.textDecoration = 'none';
+            link.style.color = '#374151';
+            link.style.borderRadius = '5px';
+
+            const div = document.createElement('div');
+            div.style.margin = '20px 0';
+            div.appendChild(canvas);
+            div.appendChild(link);
+            iconsContainer.appendChild(div);
+        });
+    </script>
+</body>
+</html>
